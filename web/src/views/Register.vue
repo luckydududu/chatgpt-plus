@@ -5,10 +5,10 @@
       <div class="page-inner">
         <div class="contain" v-if="enableRegister">
           <div class="logo">
-            <el-image src="images/logo.png" fit="cover"/>
+            <el-image :src="logo" fit="cover"/>
           </div>
 
-          <div class="header">{{ title }}</div>
+          <div class="header">用户注册</div>
           <div class="content">
             <el-form :model="formData" label-width="120px" ref="formRef">
               <div class="block">
@@ -113,6 +113,7 @@ import {setUserToken} from "@/store/session";
 
 const router = useRouter();
 const title = ref('ChatGPT-PLUS 用户注册');
+const logo = ref(process.env.VUE_APP_LOGO) ?? 'images/logo.png';
 const formData = ref({
   mobile: '',
   password: '',

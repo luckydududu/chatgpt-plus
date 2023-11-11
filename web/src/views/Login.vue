@@ -4,9 +4,9 @@
     <div class="main">
       <div class="contain">
         <div class="logo">
-          <el-image src="images/logo.png" fit="cover"/>
+          <el-image :src="logo" fit="cover"/>
         </div>
-        <div class="header">{{ title }}</div>
+        <div class="header">用户登录</div>
         <div class="content">
           <div class="block">
             <el-input placeholder="手机号" size="large" maxlength="11" v-model="username" autocomplete="off">
@@ -22,7 +22,7 @@
             <el-input placeholder="请输入密码" size="large" v-model="password" show-password autocomplete="off">
               <template #prefix>
                 <el-icon>
-                  <Lock/>
+                  <Lock />
                 </el-icon>
               </template>
             </el-input>
@@ -61,7 +61,8 @@ import {validateMobile} from "@/utils/validate";
 import {prevRoute} from "@/router";
 
 const router = useRouter();
-const title = ref('ChatGPT-PLUS 用户登录');
+const title = ref(process.env.VUE_APP_TITLE);
+const logo = ref(process.env.VUE_APP_LOGO) ?? 'images/logo.png';
 const username = ref(process.env.VUE_APP_USER);
 const password = ref(process.env.VUE_APP_PASS);
 

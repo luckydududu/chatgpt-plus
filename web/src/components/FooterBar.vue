@@ -1,17 +1,15 @@
 <template>
     <div class="container">
       <div class="footer">
-        Powered by {{author}} @
-        <el-link type="primary" href="https://github.com/yangjian102621/chatgpt-plus" target="_blank">{{title}}</el-link>
+        &copy; 2023 <el-link type="primary" href="/" target="_blank">{{title}}</el-link> 版权所有
       </div>
     </div>
 </template>
 <script setup>
 
 import {ref} from "vue";
+const title = ref(process.env.VUE_APP_TITLE);
 
-const title = ref('ChatGPT-Plus-V3')
-const author = ref('极客学长')
 </script>
 
 <style scoped lang="stylus">
