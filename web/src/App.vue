@@ -1,4 +1,5 @@
 <template>
+  <div v-if="isLoading">Loading...</div>
   <el-config-provider :locale="zhCn">
     <router-view/>
   </el-config-provider>
@@ -6,7 +7,9 @@
 
 <script setup>
 import {ElConfigProvider} from 'element-plus';
-import zhCn from 'element-plus/es/locale/lang/zh-cn';</script>
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import { isLoading } from '@/router';
+</script>
 
 
 <style lang="stylus">

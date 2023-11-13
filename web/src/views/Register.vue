@@ -112,7 +112,6 @@ import SendMsgMobile from "@/components/SendMsg.vue";
 import {setUserToken} from "@/store/session";
 
 const router = useRouter();
-const title = ref('ChatGPT-PLUS 用户注册');
 const logo = ref(process.env.VUE_APP_LOGO) ?? 'images/logo.png';
 const formData = ref({
   mobile: '',

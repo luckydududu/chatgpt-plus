@@ -35,8 +35,10 @@ import {
 import {router} from "@/router";
 import 'v3-waterfall/dist/style.css'
 import V3waterfall from "v3-waterfall";
+import {auth0} from "@/action/auth0";
 
 const app = createApp(App)
+app.use(auth0);
 app.use(createPinia())
 app.use(ConfigProvider);
 app.use(Tabbar);

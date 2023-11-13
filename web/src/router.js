@@ -1,11 +1,13 @@
 import {createRouter, createWebHistory} from "vue-router";
+import {auth0, checkPermissions, hasAccessToken} from "@/action/auth0";
+import {ref} from "vue";
 
 const routes = [
     {
         name: 'home',
         path: '/',
         redirect: '/chat',
-        meta: {title: '首页'},
+        meta: { title: '首页', requiresAuth: true },
         component: () => import('@/views/Home.vue'),
         children: [
             {
@@ -61,26 +63,25 @@ const routes = [
     {
         name: 'chat-export',
         path: '/chat/export',
-        meta: {title: '导出会话记录'},
+        meta: { title: '导出会话记录', requiresAuth: true },
         component: () => import('@/views/ChatExport.vue'),
     },
     {
         name: 'login',
         path: '/login',
-        meta: {title: '用户登录'},
+        meta: { title: '用户登录', requiresAuth: false },
         component: () => import('@/views/Login.vue'),
     },
     {
         name: 'register',
         path: '/register',
-
-        meta: {title: '用户注册'},
+        meta: { title: '用户注册', requiresAuth: false },
         component: () => import('@/views/Register.vue'),
     },
     {
         path: '/admin/login',
         name: 'admin-login',
-        meta: {title: 'Chat-Plus 控制台登录'},
+        meta: { title: 'Chat-Plus 控制台登录', requiresAuth: false },
         component: () => import('@/views/admin/Login.vue'),
     },
     {
@@ -88,7 +89,7 @@ const routes = [
         path: '/admin',
         redirect: '/admin/dashboard',
         component: () => import("@/views/admin/Home.vue"),
-        meta: {title: 'ChatGPT-Plus 管理后台'},
+        meta: { title: 'ChatGPT-Plus 管理后台', requiresAuth: true },
         children: [
             {
                 path: '/admin/dashboard',
@@ -176,7 +177,6 @@ const routes = [
             },
         ]
     },
-
     {
         path: '/mobile/chat/session',
         name: 'mobile-chat-session',
@@ -185,7 +185,7 @@ const routes = [
     {
         name: 'mobile',
         path: '/mobile',
-        meta: {title: 'ChatGPT-智能助手V3'},
+        meta: { title: 'ChatGPT-智能助手V3', requiresAuth: true },
         component: () => import('@/views/mobile/Home.vue'),
         redirect: '/mobile/chat/list',
         children: [
@@ -209,13 +209,13 @@ const routes = [
     {
         name: 'test',
         path: '/test',
-        meta: {title: '测试页面'},
+        meta: { title: '测试页面', requiresAuth: false },
         component: () => import('@/views/Test.vue'),
     },
     {
         name: 'NotFound',
         path: '/:all(.*)',
-        meta: {title: '页面没有找到'},
+        meta: { title: '页面没有找到', requiresAuth: false },
         component: () => import('@/views/404.vue'),
     },
 ]
@@ -225,15 +225,47 @@ const router = createRouter({
     history: createWebHistory(),
     routes: routes,
 })
+const isLoading = ref(false);
 
 let prevRoute = null
 // dynamic change the title when router change
-router.beforeEach((to, from, next) => {
-    if (to.meta.title) {
-        document.title = `${to.meta.title} | ${process.env.VUE_APP_TITLE}`
+router.beforeEach(async (to, from, next) => {
+    isLoading.value = true;
+    console.info(`beforeEach, to:${to.fullPath}`);
+    const requiresAuth = to.meta.requiresAuth;
+    if(to.path.startsWith('/error/') || !requiresAuth) {
+        next();
+        return;
     }
-    prevRoute = from
-    next()
+    if (requiresAuth && !(await hasAccessToken())) {
+        if (to.query.code && to.query.state) {
+            // 处理认证响应
+            await auth0.handleRedirectCallback();
+            next(to.query.state || '/');
+        } else {
+            // 该路由需要认证，但用户未登录，重定向到登录页面
+            await auth0.loginWithRedirect({appState: {targetUrl: to.fullPath}});
+        }
+    } else {
+        const permission = 'view:chat';
+        const hasPermission = await checkPermissions(permission);
+        console.info(`beforeEach, hasPermission:permission=>${hasPermission}`);
+        if(hasPermission) {
+            if (to.meta.title) {
+                document.title = `${to.meta.title} | ${process.env.VUE_APP_TITLE}`
+            }
+            prevRoute = from
+            next();
+        } else {
+            prevRoute = from
+            next('/error/404');
+        }
+
+    }
 })
 
-export {router, prevRoute};
+router.afterEach(() => {
+    isLoading.value = false;
+});
+
+export {router, prevRoute, isLoading};
