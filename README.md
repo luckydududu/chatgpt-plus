@@ -10,7 +10,8 @@ ChatGLM,讯飞星火，文心一言等多个平台的大语言模型。集成了
 * 支持 MidJourney / Stable Diffusion AI 绘画集成，开箱即用。
 * 支持使用个人微信二维码作为充值收费的支付渠道，无需企业支付通道。
 * 已集成支付宝支付功能，支持多种会员套餐和点卡购买功能。
-* 集成插件 API 功能，可结合大语言模型的 function 功能开发各种强大的插件，已内置实现了微博热搜，今日头条，今日早报和 AI 绘画函数插件。
+* 集成插件 API 功能，可结合大语言模型的 function 功能开发各种强大的插件，已内置实现了微博热搜，今日头条，今日早报和 AI
+  绘画函数插件。
 
 ## 功能截图
 
@@ -23,17 +24,28 @@ ChatGLM,讯飞星火，文心一言等多个平台的大语言模型。集成了
 ![ChatGPT new Chat Page](/docs/imgs/chat-new.png)
 
 ### MidJourney 专业绘画界面
+
 ![mid-journey](/docs/imgs/mj_image.jpg)
 
 ### Stable-Diffusion 专业绘画页面
+
 ![Stable-Diffusion](/docs/imgs/sd_image.jpg)
 ![Stable-Diffusion](/docs/imgs/sd_image_detail.jpg)
+
 ### 绘图作品展
+
 ![ChatGPT image_list](/docs/imgs/image-list.png)
+
 ### AI应用列表
+
 ![ChatGPT-app-list](/docs/imgs/app-list.jpg)
 
+### 会员充值
+
+![会员充值](/docs/imgs/member.png)
+
 ### 自动调用函数插件
+
 ![ChatGPT function plugin](/docs/imgs/plugin.png)
 ![ChatGPT function plugin](/docs/imgs/mj.jpg)
 
@@ -425,8 +437,7 @@ make clean linux
 
 如果你觉得这个项目对你有帮助，并且情况允许的话，可以请作者喝杯咖啡，非常感谢你的支持～
 
-![支付宝打赏](docs/imgs/alipay.png)
-![微信打赏](docs/imgs/wechat-pay.png)
+![打赏](docs/imgs/donate.png)
 
 ![Star History Chart](https://api.star-history.com/svg?repos=yangjian102621/chatgpt-plus&type=Date)
 

@@ -2,7 +2,9 @@
   <div class="home">
     <div class="navigator">
       <div class="logo">
-        <el-image :src="logo"/>
+        <el-link href="/">
+          <el-image :src="logo"/>
+        </el-link>
 
         <div class="divider"></div>
       </div>
@@ -15,7 +17,8 @@
               placement="right"
           >
             <a @click="changeNav(item)" :class="item.path === curPath?'active':''">
-              <i :class="'iconfont icon-'+item.icon"></i>
+              <el-image :src="item.icon_path" :width="20" v-if="item.icon_path"/>
+              <i :class="'iconfont icon-'+item.icon" v-else></i>
             </a>
           </el-tooltip>
         </li>
@@ -41,9 +44,9 @@ import {ref} from "vue";
 const router = useRouter();
 const logo = '/images/logo.png';
 const navs = ref([
-  {path: "/chat", icon: "wechat", title: "对话聊天"},
-  {path: "/mj", icon: "image", title: "MJ 绘画"},
-  {path: "/sd", icon: "palette", title: "SD 绘画"},
+  {path: "/chat", icon_path: "/images/chat.png", title: "对话聊天"},
+  {path: "/mj", icon_path: "/images/mj.png", title: "MJ 绘画"},
+  {path: "/sd", icon_path: "/images/sd.png", title: "SD 绘画"},
   {path: "/apps", icon: "menu", title: "应用中心"},
   {path: "/images-wall", icon: "image-list", title: "作品展示"},
   {path: "/knowledge", icon: "book", title: "我的知识库"},
@@ -87,7 +90,7 @@ const changeNav = (item) => {
     }
 
     .nav-items {
-      margin-top 20px
+      margin-top 10px
 
       li {
         margin-bottom 15px
@@ -102,6 +105,10 @@ const changeNav = (item) => {
           justify-content center
           align-items center
           cursor pointer
+
+          .el-image {
+            border-radius 10px
+          }
 
           .iconfont {
             font-size 20px
