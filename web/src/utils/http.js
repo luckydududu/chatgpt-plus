@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {getAdminToken, getSessionId, getUserToken} from "@/store/session";
+import {getAccessToken} from "@/action/auth0";
 
 axios.defaults.timeout = 30000
 axios.defaults.baseURL = process.env.VUE_APP_API_HOST
@@ -8,10 +9,10 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // HTTP拦截器
 axios.interceptors.request.use(
-    config => {
+    async config => {
         // set token
         config.headers['Chat-Token'] = getSessionId();
-        config.headers['Authorization'] = getUserToken();
+        config.headers['Authorization'] = await getAccessToken();
         config.headers['Admin-Authorization'] = getAdminToken();
         return config
     }, error => {

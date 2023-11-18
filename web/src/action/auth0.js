@@ -1,5 +1,8 @@
 import { createAuth0 } from '@auth0/auth0-vue';
 import {httpGet} from "@/utils/http";
+import Storage from "good-storage";
+import {randString} from "@/utils/libs";
+import {setSessionId} from "@/store/session";
 
 export const auth0 = createAuth0({
     domain: process.env.VUE_APP_AUTH0_DOMAIN,
@@ -8,6 +11,17 @@ export const auth0 = createAuth0({
         redirect_uri: window.location.origin
     },
 });
+
+export async function getAccessToken() {
+    let accessToken = '';
+    try {
+        accessToken = await auth0?.getAccessTokenSilently();
+        // console.info(`accessToken:`, accessToken);
+    } catch (err) {
+        // console.error(`Error fetching access token:`, err);
+    }
+    return accessToken;
+}
 
 export async function hasAccessToken() {
     let accessToken = '';
